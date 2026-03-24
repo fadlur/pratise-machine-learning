@@ -6,6 +6,7 @@
 merasa paham, tapi begitu dihadapkan problem baru — blank.
 
 **Solusi kurikulum ini:**
+
 1. **Build First, Library Later** — bangun algoritma dari nol dengan NumPy sebelum pakai sklearn
 2. **Deliberate Practice** — setiap modul punya tantangan yang TIDAK ada jawabannya di tutorial
 3. **Project-Driven** — setiap fase berakhir dengan proyek open-ended, bukan step-by-step
@@ -13,6 +14,7 @@ merasa paham, tapi begitu dihadapkan problem baru — blank.
 5. **Debug > Run** — sengaja ada kode yang salah untuk difix, karena debugging = belajar
 
 **Keunggulan latar belakang Teknik Elektro:**
+
 - Linear algebra, kalkulus, probabilitas → sudah kuat, tinggal mapping ke ML context
 - Signal processing → langsung relevan dengan time series, CNN (konvolusi!), feature engineering
 - Control theory → ada paralel dengan reinforcement learning & optimization
@@ -26,37 +28,37 @@ merasa paham, tapi begitu dihadapkan problem baru — blank.
 FASE 0: Setup & Tools                    [~1 hari]
   └── Environment, git, workflow
 
-FASE 1: Fondasi Data                     [~1 minggu]
+FASE 1: Fondasi Data                     [~1 minggu] | 18 Maret 2026
   └── NumPy, Pandas, Visualisasi
   └── 🏗️ Mini Project: EDA dataset nyata
 
-FASE 2: ML dari Nol (NumPy Only!)       [~2 minggu]
+FASE 2: ML dari Nol (NumPy Only!)       [~2 minggu] - 01 April 2026
   └── Linear Regression from scratch
   └── Logistic Regression from scratch
   └── Gradient Descent deep-dive
   └── Evaluasi model dari nol
   └── 🏗️ Project 1: Prediksi + Full Pipeline
 
-FASE 3: Classical ML (sklearn)           [~2 minggu]
+FASE 3: Classical ML (sklearn)           [~2 minggu] - 15 April 2026
   └── Supervised: SVM, Tree, Ensemble
   └── Unsupervised: Clustering, PCA
   └── Feature Engineering
   └── 🏗️ Project 2: Klasifikasi Sinyal
 
-FASE 4: Deep Learning                    [~3 minggu]
+FASE 4: Deep Learning                    [~3 minggu] - 06 Mei 2026
   └── Neural Net from scratch
   └── PyTorch fundamentals
   └── CNN (koneksi ke signal processing!)
   └── RNN & Time Series
   └── 🏗️ Project 3: Computer Vision
 
-FASE 5: Advanced Topics                  [~3 minggu]
+FASE 5: Advanced Topics                  [~3 minggu] - 27 Mei 2026
   └── Transfer Learning
   └── NLP & Transformers
   └── Generative Models (VAE, GAN)
   └── 🏗️ Project 4: NLP Pipeline
 
-FASE 6: Expert & Production              [~4 minggu]
+FASE 6: Expert & Production              [~4 minggu] - 24 Juni 2026
   └── Paper Implementation
   └── MLOps (experiment tracking, CI/CD)
   └── Model Serving & Deployment
@@ -68,12 +70,14 @@ FASE 6: Expert & Production              [~4 minggu]
 ## Aturan Main
 
 ### ❌ Yang TIDAK boleh dilakukan:
+
 - Copy-paste kode tanpa modifikasi
 - Skip exercise/tantangan karena "sudah paham teorinya"
 - Langsung pakai library sebelum membangun versi scratch-nya
 - Menghabiskan lebih dari 3 hari di satu modul tanpa maju
 
 ### ✅ Yang HARUS dilakukan:
+
 - Tulis kode sendiri, bahkan kalau mirip contoh
 - Eksperimen: ubah hyperparameter, ubah data, lihat apa yang terjadi
 - Dokumentasikan insight di setiap notebook (bukan cuma kode, tapi PEMAHAMAN)
@@ -81,7 +85,9 @@ FASE 6: Expert & Production              [~4 minggu]
 - Commit ke git setiap selesai satu modul
 
 ### 🎯 Graduation Criteria per Fase:
+
 Kamu boleh lanjut ke fase berikutnya HANYA jika:
+
 1. Semua exercise selesai
 2. Project fase tersebut sudah complete dengan README
 3. Bisa menjelaskan konsep ke orang lain TANPA melihat kode
@@ -104,6 +110,7 @@ python 01_numpy_essentials.py
 ```
 
 Setiap file Python berisi:
+
 - 📖 **Penjelasan** — teori ringkas yang relevan
 - 💻 **Kode contoh** — implementasi yang bisa dirun
 - 🏋️ **Exercise** — latihan dengan petunjuk, TANPA jawaban
@@ -114,6 +121,7 @@ Setiap file Python berisi:
 ## Estimasi Total: ~3-4 bulan (part-time, 1-2 jam/hari)
 
 Dengan background S2 Teknik Elektro, beberapa bagian bisa lebih cepat:
+
 - Fase 1 bisa selesai lebih cepat (math foundation sudah ada)
 - Fase 2 gradient descent / optimization → sudah familiar
 - Fase 4 CNN convolution → direct mapping dari signal processing

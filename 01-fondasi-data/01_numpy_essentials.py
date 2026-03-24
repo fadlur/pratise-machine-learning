@@ -12,6 +12,9 @@ Durasi target: 2-3 jam
 =============================================================
 """
 import numpy as np
+import time
+from pathlib import Path
+import matplotlib.pyplot as plt
 # ===========================================================
 # 📖 BAGIAN 1: Array Creation & Basic Operations
 # ===========================================================
@@ -186,16 +189,34 @@ di atas. Jalankan test di bawahnya untuk verifikasi.
 """
 
 def batch_normalize(X):
-    # TODO: implementasi di sini
-    pass
+    # Tambahkan epsilon kecil agar aman jika ada kolom dengan std = 0.
+    mean = X.mean(axis=0)
+    std = X.std(axis=0)
+    eps = 1e-12
+    X_normalized = (X - mean) / (std + eps)
+    return X_normalized
 
 def cosine_similarity(a, b):
-    # TODO: implementasi di sini
-    pass
+    a = np.asarray(a)
+    b = np.asarray(b)
+
+    numerator = np.dot(a, b)
+    denominator = np.linalg.norm(a) * np.linalg.norm(b)
+
+    if denominator == 0:
+        raise ValueError("Cosine similarity tidak terdefinisi untuk vektor nol.")
+
+    return numerator / denominator
 
 def one_hot_encode(labels, num_classes):
-    # TODO: implementasi di sini
-    pass
+    labels = np.asarray(labels, dtype=int)
+
+    if np.any(labels < 0) or np.any(labels >= num_classes):
+        raise ValueError("Ada label di luar rentang [0, num_classes-1].")
+
+    one_hot = np.zeros((labels.shape[0], num_classes), dtype=int)
+    one_hot[np.arange(labels.shape[0]), labels] = 1
+    return one_hot
 
 # --- Test (uncomment setelah implementasi) ---
 X_test = np.random.randn(50, 3)
@@ -215,6 +236,93 @@ oh = one_hot_encode(labels, 3)
 expected = np.array([[1,0,0],[0,0,1],[0,1,0],[1,0,0]])
 assert np.array_equal(oh, expected), f"Expected:\n{expected}\nGot:\n{oh}"
 print("✅ one_hot_encode passed!")
+
+
+def generate_mixed_signal(fs=500, duration=1.0, noise_std=0.2):
+    """Generate sinyal campuran 10 Hz + 50 Hz + noise Gaussian."""
+    t = np.linspace(0, duration, int(fs * duration), endpoint=False)
+    y = np.sin(2 * np.pi * 10 * t) + 0.5 * np.sin(2 * np.pi * 50 * t)
+    y += noise_std * np.random.randn(t.shape[0])
+    return t, y
+
+
+def manual_dft(x):
+    """DFT manual berbasis definisi matriks (O(N^2))."""
+    x = np.asarray(x, dtype=np.complex128)
+    N = x.shape[0]
+
+    n = np.arange(N)
+    k = n.reshape((N, 1))
+    W = np.exp(-2j * np.pi * k * n / N)
+    return W @ x
+
+
+def single_sided_spectrum(X, fs):
+    """Ambil spektrum sisi positif untuk sinyal real."""
+    N = X.shape[0]
+    freqs = np.fft.fftfreq(N, d=1 / fs)
+    pos_mask = freqs >= 0
+    return freqs[pos_mask], np.abs(X[pos_mask]) / N
+
+
+def benchmark_dft(x):
+    """Bandingkan waktu eksekusi DFT manual vs FFT NumPy."""
+    start_manual = time.perf_counter()
+    X_manual = manual_dft(x)
+    manual_time = time.perf_counter() - start_manual
+
+    start_fft = time.perf_counter()
+    X_fft = np.fft.fft(x)
+    fft_time = time.perf_counter() - start_fft
+
+    return X_manual, X_fft, manual_time, fft_time
+
+
+def plot_signal_and_spectrum(t, y, f_manual, amp_manual, f_fft, amp_fft):
+    """Plot domain waktu dan spektrum frekuensi dari dua metode."""
+    fig, axes = plt.subplots(2, 1, figsize=(11, 8))
+
+    axes[0].plot(t, y, color="tab:blue", linewidth=1)
+    axes[0].set_title("Sinyal Campuran di Domain Waktu")
+    axes[0].set_xlabel("Waktu (detik)")
+    axes[0].set_ylabel("Amplitudo")
+    axes[0].grid(alpha=0.3)
+
+    axes[1].plot(f_manual, amp_manual, label="Manual DFT", color="tab:orange", alpha=0.8)
+    axes[1].plot(f_fft, amp_fft, label="NumPy FFT", color="tab:green", linestyle="--", alpha=0.8)
+    axes[1].set_xlim(0, 120)
+    axes[1].set_title("Spektrum Frekuensi (Sisi Positif)")
+    axes[1].set_xlabel("Frekuensi (Hz)")
+    axes[1].set_ylabel("Magnitude")
+    axes[1].grid(alpha=0.3)
+    axes[1].legend()
+
+    plt.tight_layout()
+
+    # Jika backend non-interaktif (mis. Agg), simpan gambar agar tetap ada hasil visual.
+    if "agg" in plt.get_backend().lower():
+        output_path = Path(__file__).resolve().parent / "challenge_spectrum.png"
+        plt.savefig(output_path, dpi=150)
+        plt.close(fig)
+    else:
+        plt.show()
+
+
+# --- Eksekusi challenge ---
+fs = 500
+t, y = generate_mixed_signal(fs=fs, duration=1.0, noise_std=0.2)
+X_manual, X_fft, manual_time, fft_time = benchmark_dft(y)
+
+f_manual, amp_manual = single_sided_spectrum(X_manual, fs)
+f_fft, amp_fft = single_sided_spectrum(X_fft, fs)
+
+speedup = manual_time / fft_time if fft_time > 0 else np.inf
+print("\n🔥 Challenge Results")
+print(f"Manual DFT time: {manual_time:.6f} s")
+print(f"NumPy FFT time:  {fft_time:.6f} s")
+print(f"FFT speedup:     {speedup:.2f}x lebih cepat")
+
+plot_signal_and_spectrum(t, y, f_manual, amp_manual, f_fft, amp_fft)
 
 
 # ===========================================================
